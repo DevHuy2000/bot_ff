@@ -2252,10 +2252,10 @@ Enjoy the bot my friend.......
 	                    print("Error with AI API:", response.status_code, response.text)
 
 
-            if '1200' in data.hex()[0:4] and b'/lag' in data:
+            if '1200' in data.hex()[0:4] and b'/llag' in data:
                 try:
                     # تقسيم البيانات القادمة بعد الأمر
-                    split_data = re.split(rb'/lag', data)
+                    split_data = re.split(rb'/llag', data)
                     command_parts = split_data[1].split(b'(')[0].decode().strip().split()
 
                     # التأكد من وجود الكود على الأقل
