@@ -1788,6 +1788,7 @@ Enjoy the bot my friend.......
 	                    player_id = command_split[1].split('(')[0].strip()
 
 	                    print(f"[C][B]Visit Sending : {player_id}")
+	                    message = send_vistttt(player_id)
 	                    json_result = get_available_room(data.hex()[10:])
 	                    parsed_data = json.loads(json_result)
 	                    uid = parsed_data["5"]["data"]["1"]["data"]
@@ -1797,12 +1798,6 @@ Enjoy the bot my friend.......
 	                    )
 	                )
 	                    
-	                    message = send_vistttt(player_id)
-	                    json_result = get_available_room(data.hex()[10:])
-	                    parsed_data = json.loads(json_result)
-	                    uid = parsed_data["5"]["data"]["1"]["data"]
-	                    
-	                    clients.send(self.GenResponsMsg(message, uid))	                           
 	                    
 	            if "1200" in data.hex()[0:4] and b"/info" in data:
 	                try:
