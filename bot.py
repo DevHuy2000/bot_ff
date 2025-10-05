@@ -1161,7 +1161,7 @@ class FF_CLIENT(threading.Thread):
                 if asdj == 14:
                     nameroom = parsed_data["5"]["data"]["1"]["data"]["2"]["data"]
                     
-                     maxplayer = parsed_data["5"]["data"]["1"]["data"]["7"]["data"]
+                    maxplayer = parsed_data["5"]["data"]["1"]["data"]["7"]["data"]
                     maxplayer1 = fix_num(maxplayer)
                     nowplayer = parsed_data["5"]["data"]["1"]["data"]["6"]["data"]
                     nowplayer1 = fix_num(nowplayer)
