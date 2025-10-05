@@ -286,7 +286,32 @@ def send_vistttt(uid):
 
     return message        
 
-
+def send_l(uid):
+	likes_api_response = requests.get(f"https://likeff01.vercel.app/like?uid={uid}&server_name=VN")
+	message = (f"[C][B][FF0000]________________________\n"
+f" Wrong ID .......\n"
+f" Please Check Again\n"
+f"________________________")
+	if likes_api_response.status_code == 200:
+		api_json_response = likes_api_response.json()
+		likes_after = api_json_response['LikesafterCommand']
+		likes_before = api_json_response['LikesbeforeCommand']
+		player_name = api_json_response['PlayerNickname']
+		like_add = api_json_response['LikesGivenByAPI']
+		message = (f"{generate_random_color()}________________________\n"
+f" Likes Status :\n"
+f" LIKES SENT !\n\n"
+f" LIKES ADD : + {like_add} LIKE\n"
+f" PLAYER NAME : {player_name}\n"
+f" LIKES BEFORE : {likes_before}\n"
+f" LIKES AFTER : {likes_after}"
+f" TIKTOK : Senzu.!"
+f"________________________")
+		
+		return {"status":"ok","message":message}
+	else:
+		return {"status":"failed","message":message}
+		
 def rrrrrrrrrrrrrr(number):
     if isinstance(number, str) and '***' in number:
         return number.replace('***', '106')
@@ -494,7 +519,7 @@ def attack_profail(player_id):
         print("Fuck-Attack")
 
 def send_likes(uid):
-    likes_api_response = requests.get(f"Here is the api likes")
+    likes_api_response = requests.get(f"https://likeff01.vercel.app/like?uid={uid}&server_name=VN")
     
     if likes_api_response.status_code == 200:
         api_data = likes_api_response.json()
@@ -505,8 +530,8 @@ def send_likes(uid):
                 "status": "failed",
                 "message": (
                     f"[C][B][FF0000]________________________\n"
-                    f" ❌ الحد اليومي لإرسال الإعجابات!\n"
-                    f" حاول مرة أخرى بعد 24 ساعة\n"
+                    f" ❌ Giới hạn gửi lượt thích hàng ngày!\n"
+                    f" Hãy thử lại sau 24 giờ.\n"
                     f"________________________"
                 )
             }
@@ -516,10 +541,10 @@ def send_likes(uid):
                 "status": "ok",
                 "message": (
                     f"[C][B][00FF00]________________________\n"
-                    f" ✅ تم إضافة {api_data['LikesGivenByAPI']} إعجاب\n"
-                    f" الاسم: {api_data['PlayerNickname']}\n"
-                    f" الإعجابات السابقة: {api_data['LikesbeforeCommand']}\n"
-                    f" الإعجابات الجديدة: {api_data['LikesafterCommand']}\n"
+                    f" ✅ Đã thêm : {api_data['LikesGivenByAPI']} Like\n"
+                    f" Name : {api_data['PlayerNickname']}\n"
+                    f" Lượt thích trước đó : {api_data['LikesbeforeCommand']}\n"
+                    f" Lượt thích mới : {api_data['LikesafterCommand']}\n"
                     f"________________________"
                 )
             }
@@ -529,8 +554,8 @@ def send_likes(uid):
             "status": "failed",
             "message": (
                 f"[C][B][FF0000]________________________\n"
-                f" ❌ خطأ في الإرسال!\n"
-                f" تأكد من صحة اليوزر ID\n"
+                f" ❌ Gửi lỗi!\n"
+                f" Xác minh ID người dùng\n"
                 f"________________________"
             )
         }
@@ -1529,63 +1554,7 @@ Enjoy the bot my friend.......
                 except Exception as e:
                     print(f"Error in /md command: {e}")
 
-            if "1200" in data.hex()[0:4] and b"/3" in data:
-                # يแยก i من الأمر /3
-                i = re.split("/3", str(data))[1]
-                if "***" in i:
-                    i = i.replace("***", "106")
-                sid = str(i).split("(\\x")[0]
-                
-                # استخراج بيانات اللاعب المرسل
-                json_result = get_available_room(data.hex()[10:])
-                parsed_data = json.loads(json_result)
-                uid = parsed_data["5"]["data"]["1"]["data"]
 
-                # 1. إنشاء فريق جديد
-                packetmaker = self.skwad_maker()
-                socket_client.send(packetmaker)
-                sleep(0.5)  # انتظر قليلاً لضمان إنشاء الفريق
-
-                # 2. تغيير وضع الفريق إلى 3 لاعبين (2 = 3-1)
-                packetfinal = self.changes(2)
-                socket_client.send(packetfinal)
-                sleep(0.5)
-
-                # 3. التحقق مما إذا كان هناك ID لدعوته
-                room_data = None
-                if b'(' in data:
-                    split_data = data.split(b'/3')
-                    if len(split_data) > 1:
-                        room_data = split_data[1].split(
-                            b'(')[0].decode().strip().split()
-                        if room_data:
-                            iddd = room_data[0]
-                            # إرسال دعوة للاعب المحدد
-                            invitess = self.invite_skwad(iddd)
-                            socket_client.send(invitess)
-                        else:
-                            # إذا لم يتم تحديد ID، يتم دعوة الشخص الذي أرسل الأمر
-                            iddd = uid
-                            invitess = self.invite_skwad(iddd)
-                            socket_client.send(invitess)
-
-                # 4. إرسال رسالة تأكيد للمستخدم
-                if uid:
-                    clients.send(
-                        self.GenResponsMsg(
-                            f"[C][B][1E90FF]-----------------------------\n\n\n\nCover Đội Team 3\n\n\n\n-----------------------------",
-                            uid
-                        )
-                    )
-
-                # 5. مغادرة الفريق وتغيير الوضع إلى فردي (Solo) بعد فترة
-                sleep(5)  # انتظر 5 ثوانٍ
-                leavee = self.leave_s()
-                socket_client.send(leavee)
-                sleep(1)
-                change_to_solo = self.changes(1)
-                socket_client.send(change_to_solo)
-                    
             if "1200" in data.hex()[0:4] and b"/5" in data:
                 i = re.split("/5", str(data))[1]
                 if "***" in i:
@@ -2138,17 +2107,17 @@ Enjoy the bot my friend.......
 	                    
 	                    
 	                    
-	            if "1200" in data.hex()[0:4] and b"/likes" in data:
+	            if "1200" in data.hex()[0:4] and b"/like" in data:
 	                   
 	                    json_result = get_available_room(data.hex()[10:])
 	                    parsed_data = json.loads(json_result)
 	                    uid = parsed_data["5"]["data"]["1"]["data"]
 	                    clients.send(
 	                    self.GenResponsMsg(
-	                        f"{generate_random_color()}جاري العمل علي الطلب", uid
+	                        f"{generate_random_color()}Okay Sir, Please Wait..", uid
 	                    )
 	                )
-	                    command_split = re.split("/likes", str(data))
+	                    command_split = re.split("/like", str(data))
 	                    player_id = command_split[1].split('(')[0].strip()
 	                    print(player_id)
 	                    likes_response = send_likes(player_id)
@@ -2159,6 +2128,8 @@ Enjoy the bot my friend.......
 	                    parsed_data = json.loads(json_result)
 	                    uid = parsed_data["5"]["data"]["1"]["data"]
 	                    clients.send(self.GenResponsMsg(message, uid))
+	                    	
+											
 	            	
 	            if "1200" in data.hex()[0:4] and b"/check" in data:
 	                   try:
@@ -2224,21 +2195,23 @@ Enjoy the bot my friend.......
 [FF3333]User Allowed : {days} Ngày
 ━━━━━━━━━━━━
 [FFFFFF]× [00FFFF]Create Team squads:[FFFFFF]
- => [00FF00]/😁3 => /😁5 => /😁6
- => [00FF00]/😁crt [UID] 5
+ => {generate_random_color()}/😁5 => /😁6[FFFFFF]
+ => {generate_random_color()}/😁crt [UID] 5
 
-[FFFFFF]× [00FF90]Command Spam invite:[FFFFFF]
- » [FFFFFF]spam invite join room:
- => [b][c][00FF00]/😁room - [UID]  [FFFFFF]
- » [FFFFFF]spam teamcode
- => [b][c][00FF00]/😁lag - [Code]  [FFFFFF]
- => [b][c][00FF00]/😁attack - [Code]  [FFFFFF]
- 
+{generate_random_color()}× Command Spam invite:[FFFFFF]
+ » {generate_random_color()}spam invite join room:
+ => {generate_random_color()}/😁room - [UID]  [FFFFFF]
+ » {generate_random_color()}spam teamcode
+ => {generate_random_color()}/😁lag - [Code]  [FFFFFF]
+ => {generate_random_color()}/😁attack - [Code]  [FFFFFF]
+{generate_random_color()}× [00FF90]Get Likes Profile:[FFFFFF]
+ => {generate_random_color()}/😁like - [UID]  [FFFFFF]
+
  [b][c]╭─╮
 ︱ ꚠ ︱tiktok┊Senzu.![ff00ff]
 ╰─╯
  ━━━━━━━━━━━━
- [C][B][00CC99]× Giờ: [C0C0C0]{hours} Giờ {minutes} Phút {seconds} Giây
+ {generate_random_color()}× Giờ: [C0C0C0]{hours} Giờ {minutes} Phút {seconds} Giây
             """, uid
                         )
                     )
@@ -2775,7 +2748,7 @@ for thread in threads:
     
 if __name__ == "__main__":
     try:
-        client_thread = FF_CLIENT(id="3900968880", password="Non lo so, abbi pazienza4782FEBA4C05142F8BA3EAB711B57893A3233ACBBE8D19B3BA93D902066D479B")
+        client_thread = FF_CLIENT(id="4177262443", password="F637344B4B6191C5828A9789D403BE151F58827A38C1A7CA3C36C33EBECC16F4")
         client_thread.start()
     except Exception as e:
         logging.error(f"Error occurred: {e}")
