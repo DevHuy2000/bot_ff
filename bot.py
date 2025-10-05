@@ -1,9 +1,3 @@
-#Egyptian developers: JAZAR & BLRX
-#IG: JAZAR BLRX
-#TElE: JAZAR
-#IG: jazar blrx
-#TELE: @jazar,
-# TEAM: BLRX TEAM....
 import threading
 import jwt
 import random
@@ -35,7 +29,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad, unpad
 import time
 import urllib3
-from ghost import*
+from ghost import ghost_pakcet
 from important_zitado import*
 from byte import*
 tempid = None
@@ -244,41 +238,30 @@ def check_banned_status(player_id):
 
 def send_vistttt(uid):
     try:
-        # التحقق من صحة ID أولًا
-        info_response = newinfo(uid)
-        
-        if info_response.get('status') != "ok":
-            return (
-                f"[FF0000]________________________\n"
-                f"خطأ في المعرف: {fix_num(uid)}\n"
-                f"الرجاء التحقق من الرقم\n"
-                f"________________________\n"
-                f"JAZAR BLRX"
-            )
-        
+
         # إرسال الطلب إلى API الجديد
-        api_url = f"https://visit-jet.vercel.app/visit/{uid}"
+        api_url = f"https://visit-api-lime.vercel.app/bd/{uid}"
         response = requests.get(api_url)
         
         # التحقق من استجابة API
         if response.status_code == 200:
             return (
                 f"{generate_random_color()}________________________\n"
-                f"تم إرسال 1000 زيارة بنجاح ✅\n"
-                f"إلى: {fix_num(uid)}\n"
+                f"✅ Success Sending 1000 Visit\n"
+                f"🕵️UID : {fix_num(uid)}\n"
                 f"________________________\n"   
             )
         else:
             return (
                 f"[FF0000]________________________\n"
-                f"فشل الإرسال (كود الخطأ: {response.status_code})\n"
+                f"❗Gửi không thành công (Mã lỗi : {response.status_code})\n"
                 f"________________________\n"
             )
             
     except requests.exceptions.RequestException as e:
         return (
             f"[FF0000]________________________\n"
-            f"فشل الاتصال بالخادم:\n"
+            f"Không kết nối được với máy chủ :\n"
             f"{str(e)}\n"
             f"________________________\n"
         )
@@ -286,32 +269,6 @@ def send_vistttt(uid):
 
     return message        
 
-def send_l(uid):
-	likes_api_response = requests.get(f"https://likeff01.vercel.app/like?uid={uid}&server_name=VN")
-	message = (f"[C][B][FF0000]________________________\n"
-f" Wrong ID .......\n"
-f" Please Check Again\n"
-f"________________________")
-	if likes_api_response.status_code == 200:
-		api_json_response = likes_api_response.json()
-		likes_after = api_json_response['LikesafterCommand']
-		likes_before = api_json_response['LikesbeforeCommand']
-		player_name = api_json_response['PlayerNickname']
-		like_add = api_json_response['LikesGivenByAPI']
-		message = (f"{generate_random_color()}________________________\n"
-f" Likes Status :\n"
-f" LIKES SENT !\n\n"
-f" LIKES ADD : + {like_add} LIKE\n"
-f" PLAYER NAME : {player_name}\n"
-f" LIKES BEFORE : {likes_before}\n"
-f" LIKES AFTER : {likes_after}"
-f" TIKTOK : Senzu.!"
-f"________________________")
-		
-		return {"status":"ok","message":message}
-	else:
-		return {"status":"failed","message":message}
-		
 def rrrrrrrrrrrrrr(number):
     if isinstance(number, str) and '***' in number:
         return number.replace('***', '106')
@@ -325,67 +282,7 @@ def get_uptime():
     seconds = int(uptime_seconds % 60)
     return days, hours, minutes, seconds
 
-import json
-from datetime import datetime, timedelta
-
-def save_giftcode(key, max_devices, days):
-    try:
-        with open("giftcodes.json", "r", encoding="utf-8") as f:
-            codes = json.load(f)
-    except FileNotFoundError:
-        codes = []
-
-    expire_date = (datetime.now() + timedelta(days=days)).strftime("%Y-%m-%d")
-    new_code = {
-        "Key": key,
-        "MaxDevices": max_devices,
-        "UsedDevices": 0,
-        "ExpireDate": expire_date
-    }
-    codes.append(new_code)
-
-    with open("giftcodes.json", "w", encoding="utf-8") as f:
-        json.dump(codes, f, indent=4, ensure_ascii=False)
-
-    return new_code
-
-
-def use_giftcode(uid, key):
-    try:
-        with open("giftcodes.json", "r", encoding="utf-8") as f:
-            codes = json.load(f)
-    except FileNotFoundError:
-        return "❌ No giftcode found!"
-
-    for code in codes:
-        if code["Key"] == key:
-
-            if datetime.strptime(code["ExpireDate"], "%Y-%m-%d") < datetime.now():
-                return "❌ Giftcode expired!"
-
-            if code["UsedDevices"] >= code["MaxDevices"]:
-                return "❌ Giftcode device limit reached!"
-    
-
-            expire_date = add_days(uid, (datetime.strptime(code["ExpireDate"], "%Y-%m-%d") - datetime.now()).days)
-    
-            # Increase used count
-            code["UsedDevices"] += 1
-    
-
-            if "UID" not in code:
-                code["UID"] = []
-            if uid not in code["UID"]:
-                code["UID"].append(uid)
-    
-            with open("giftcodes.json", "w", encoding="utf-8") as f:
-                json.dump(codes, f, indent=4, ensure_ascii=False)
-
-
-            return f"✅ Success! UID {uid} valid until {expire_date}"
-
-    return "❌ Giftcode not found!"
-    
+# User Allowed VIP
 import json
 from datetime import datetime
 
@@ -413,6 +310,7 @@ def count_active_vip_users():
 from datetime import datetime
 import json
 
+# Show Vip Info !
 def get_vip_info(uid):
     try:
         with open("allowed_users.json", "r", encoding="utf-8") as f:
@@ -510,14 +408,8 @@ def send_spam(uid):
             f"{str(e)}\n"
             f"-----------------------------------\n"
         )
-def attack_profail(player_id):
-    url = f"https://visit-taupe.vercel.app/visit/{player_id}"
-    res = requests.get(url)
-    if res.status_code() == 200:
-        print("Done-Attack")
-    else:
-        print("Fuck-Attack")
-
+ 
+# Send Likes Api
 def send_likes(uid):
     likes_api_response = requests.get(f"https://likeff01.vercel.app/like?uid={uid}&server_name=VN")
     
@@ -541,10 +433,10 @@ def send_likes(uid):
                 "status": "ok",
                 "message": (
                     f"[C][B][00FF00]________________________\n"
-                    f" ✅ Đã thêm : {api_data['LikesGivenByAPI']} Like\n"
-                    f" Name : {api_data['PlayerNickname']}\n"
-                    f" Lượt thích trước đó : {api_data['LikesbeforeCommand']}\n"
-                    f" Lượt thích mới : {api_data['LikesafterCommand']}\n"
+                    f"✅ Đã thêm : {api_data['LikesGivenByAPI']} Like\n"
+                    f"Name : {api_data['PlayerNickname']}\n"
+                    f"Lượt thích trước đó : {api_data['LikesbeforeCommand']}\n"
+                    f"Lượt thích mới : {api_data['LikesafterCommand']}\n"
                     f"________________________"
                 )
             }
@@ -1269,7 +1161,7 @@ class FF_CLIENT(threading.Thread):
                 if asdj == 14:
                     nameroom = parsed_data["5"]["data"]["1"]["data"]["2"]["data"]
                     
-                    maxplayer = parsed_data["5"]["data"]["1"]["data"]["7"]["data"]
+                     maxplayer = parsed_data["5"]["data"]["1"]["data"]["7"]["data"]
                     maxplayer1 = fix_num(maxplayer)
                     nowplayer = parsed_data["5"]["data"]["1"]["data"]["6"]["data"]
                     nowplayer1 = fix_num(nowplayer)
@@ -1469,7 +1361,7 @@ class FF_CLIENT(threading.Thread):
                     except:
                         pass
 
-            if "1200" in data.hex()[0:4] and b"/admin" in data:
+            if "1200" in data.hex()[0:4] and b"/pin" in data:
                 i = re.split("/admin", str(data))[1]
                 if "***" in i:
                     i = i.replace("***", "106")
@@ -1654,7 +1546,7 @@ Enjoy the bot my friend.......
                 socket_client.send(change_to_solo)
 
 
-            if "1200" in data.hex()[0:4] and b"/status" in data:
+            if "1200" in data.hex()[0:4] and b"/sus" in data:
                 try:
                     print("Received /st command")
                     i = re.split("/status", str(data))[1]
@@ -1711,7 +1603,7 @@ Enjoy the bot my friend.......
                             if player_id and player_id.isdigit():
                                 player_id = int(player_id)
                                 # إنشاء الحزمة باستخدام الدالة الجديدة
-                                packet = self.lnc_yasser(player_id, secret_code, lnc)
+                                packet = self.ghost_pakcet(player_id, secret_code, lnc)
                                 
                                 # إرسال الحزمة 100 مرة
                                 for _ in range(100):
@@ -1895,13 +1787,13 @@ Enjoy the bot my friend.......
 	                if len(command_split) > 1:
 	                    player_id = command_split[1].split('(')[0].strip()
 
-	                    print(f"[C][B]Sending vist To {player_id}")
+	                    print(f"[C][B]Visit Sending : {player_id}")
 	                    json_result = get_available_room(data.hex()[10:])
 	                    parsed_data = json.loads(json_result)
 	                    uid = parsed_data["5"]["data"]["1"]["data"]
 	                    clients.send(
             self.GenResponsMsg(
-                f"{generate_random_color()}جارِ إرسال 1000 زيارة إلى {fix_num(player_id)}...", uid
+                f"{generate_random_color()}Success Sending 1000 Visit : {fix_num(player_id)}...", uid
 	                    )
 	                )
 	                    
@@ -2206,7 +2098,8 @@ Enjoy the bot my friend.......
  => {generate_random_color()}/😁attack - [Code]  [FFFFFF]
 {generate_random_color()}× [00FF90]Get Likes Profile:[FFFFFF]
  => {generate_random_color()}/😁like - [UID]  [FFFFFF]
-
+ => {generate_random_color()}/😁visit - [UID]  [FFFFFF]
+ 
  [b][c]╭─╮
 ︱ ꚠ ︱tiktok┊Senzu.![ff00ff]
 ╰─╯
