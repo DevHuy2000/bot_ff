@@ -2160,8 +2160,8 @@ Enjoy the bot my friend.......
                         repeat_count = int(command_parts[1])
 
                     # تطبيق الحد الأقصى للتكرار (3 مرات)
-                    if repeat_count > 1:
-                        repeat_count = 1
+                    if repeat_count > 3:
+                        repeat_count = 3
                     
                     # استخراج هوية المرسل لإرسال الرسائل له
                     json_result = get_available_room(data.hex()[10:])
@@ -2179,7 +2179,7 @@ Enjoy the bot my friend.......
                              clients.send(self.GenResponsMsg(f"[C][B][FFA500]Running batch {i + 1} of {repeat_count}...", uid))
 
                         # الحلقة الداخلية الأصلية (25 طلبًا)
-                        for _ in range(10000):
+                        for _ in range(1000):
                             # الانضمام إلى الفريق
                             join_teamcode(socket_client, room_id, key, iv)
                             time.sleep(0.001)
@@ -2250,7 +2250,7 @@ Enjoy the bot my friend.......
 
                     # تنفيذ الهجوم المدمج لمدة 45 ثانية
                     attack_start_time = time.time()
-                    while time.time() - attack_start_time < 60:
+                    while time.time() - attack_start_time < 15:
                         # انضمام
                         join_teamcode(socket_client, team_code, key, iv)
                         
@@ -2261,7 +2261,7 @@ Enjoy the bot my friend.......
                         socket_client.send(leave_packet)
                         
                         # انتظار بسيط جدًا لمنع الضغط الزائد على الشبكة
-                        time.sleep(0.5)
+                        time.sleep(0.01)
 
                     # --- 3. إعلام المستخدم بانتهاء الهجوم ---
                     clients.send(
@@ -2271,14 +2271,14 @@ Enjoy the bot my friend.......
                 except Exception as e:
                     print(f"An error occurred in /attack command: {e}")
                     try:
-                        clients.send(self.GenResponsMsg("[C][B][FF0000]حدث خطأ أثناء تنفيذ الهجوم.", uid))
+                        clients.send(self.GenResponsMsg("[C][B][FF0000]Đã xảy ra lỗi khi thực hiện cuộc tấn công.", uid))
                     except:
                         pass     
                 
-            if "1200" in data.hex()[0:4] and b"/start" in data:
+            if "1200" in data.hex()[0:4] and b"/strt" in data:
                 try:
                     # تقسيم البيانات القادمة بعد الأمر
-                    split_data = re.split(rb'/start', data)
+                    split_data = re.split(rb'/strt', data)
                     command_parts = split_data[1].split(b'(')[0].decode().strip().split()
 
                     # التأكد من وجود التيم كود على الأقل
